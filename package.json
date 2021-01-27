@@ -1,0 +1,19 @@
+{
+  "name": "spotyourmusic",
+  "description": "Nodejs app fetching spotify metadata and adding it to youtube mp3s",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"no test!\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paulao17/spotyourmusic.git"
+  },
+  "author": "Paulao17",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Paulao17/spotyourmusic/issues"
+  },
+  "homepage": "https://github.com/Paulao17/spotyourmusic#readme"
+}
