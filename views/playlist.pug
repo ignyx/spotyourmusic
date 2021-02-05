@@ -3,6 +3,11 @@ extends layout
 block content
   h1= title
 
+  a(href='/playlist/' + id + '/queue')
+    button Add to queue
+  br
+  a(href='/jobs') View queue
+
   h2 Tracks
   table
     tr
