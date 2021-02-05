@@ -11,6 +11,7 @@ block content
       th Status
     each job in finished
       tr
-        td #{job.jobId}
+        td
+          a(href='jobs/' + job.jobId) #{job.jobId}
         td #{job.type}
         td #{job.status}
