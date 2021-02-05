@@ -10,6 +10,8 @@ router.get('/', async (req, res) => {
 
   res.render('jobs', {
     finished: allJobs.finished,
+    queued: allJobs.queue,
+    failed: allJobs.failed,
     title: 'Jobs'
   })
 })

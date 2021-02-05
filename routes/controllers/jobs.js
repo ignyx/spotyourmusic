@@ -9,5 +9,19 @@ module.exports.getAll = async (redis) => {
   });
   jobs.finished = Array.from(await pipeline.exec(), result => result[1])
 
+  var queuedIds = await redis.lrange('queue', 0, 100)
+  let queuePipeline = redis.pipeline()
+  queuedIds.forEach((jobId) => {
+    if (jobId) queuePipeline.hgetall('job' + jobId)
+  });
+  jobs.queue = Array.from(await queuePipeline.exec(), result => result[1])
+
+  var failedIds = await redis.lrange('failed', 0, 100)
+  let failedPipeline = redis.pipeline()
+  failedIds.forEach((jobId) => {
+    if (jobId) failedPipeline.hgetall('job' + jobId)
+  });
+  jobs.failed = Array.from(await failedPipeline.exec(), result => result[1])
+
   return jobs
 }

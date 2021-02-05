@@ -3,6 +3,38 @@ extends layout
 block content
   h1 Jobs
 
+  h2 Queued
+  if queued.length
+    table
+      tr
+        th id
+        th Type
+        th Status
+      each job in queued
+        tr
+          td
+            a(href='jobs/' + job.jobId) #{job.jobId}
+          td #{job.type}
+          td #{job.status}
+  else
+    p none
+
+  h2 Failed
+  if failed.length
+    table
+      tr
+        th id
+        th Type
+        th Status
+      each job in failed
+        tr
+          td
+            a(href='jobs/' + job.jobId) #{job.jobId}
+          td #{job.type}
+          td #{job.status}
+  else
+    p none
+
   h2 Finished
   table
     tr
