@@ -6,3 +6,10 @@ block content
   p Id : #{job.jobId}
   p Type : #{job.type}
   p Status : #{job.status}
+
+  if track
+    h2 Track
+    img(src=track.coverUrl)
+    p Artist : #{track.artist}
+    p Album : #{track.album}
+    p Title : #{track.title}
