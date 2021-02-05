@@ -1,3 +1,7 @@
+# App specific
+data/*
+public/tracks/*
+
 # Logs
 logs
 *.log

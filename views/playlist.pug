@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+
+  h2 Tracks
+  table
+    tr
+      th
+      th Artist
+      th Title
+      th Available
+    each track in tracks
+      tr
+        td
+          img(src=track.coverUrl)
+        td #{track.artist}
+        td #{track.title}
+        td #{track.available}

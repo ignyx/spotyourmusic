@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/Paulao17/spotyourmusic/issues"
   },
-  "homepage": "https://github.com/Paulao17/spotyourmusic#readme"
+  "homepage": "https://github.com/Paulao17/spotyourmusic#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ffmetadata": "^1.6.0",
+    "ioredis": "^4.19.4",
+    "node-spotify-api": "^1.1.1",
+    "pug": "^3.0.0",
+    "socket.io": "^3.1.0",
+    "yt-search": "^2.6.1"
+  }
 }

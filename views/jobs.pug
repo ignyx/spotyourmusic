@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Jobs
+
+  h2 Finished
+  table
+    tr
+      th id
+      th Type
+      th Status
+    each job in finished
+      tr
+        td #{job.jobId}
+        td #{job.type}
+        td #{job.status}
