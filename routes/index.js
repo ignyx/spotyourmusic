@@ -23,4 +23,12 @@ router.use((req, res, next) => {
 router.use('/playlist', playlistRouter)
 router.use('/jobs', jobsRouter)
 
+const spotifyPlaylistBaseUrl = 'https://open.spotify.com/playlist/'
+
+router.get('/spotify', (req, res) => {
+  if (req.query.url.includes(spotifyPlaylistBaseUrl))
+    res.redirect('/playlist/' + req.query.url.split(spotifyPlaylistBaseUrl)[1])
+  else res.status(400).end('Unable to locate type and id') 
+})
+
 module.exports = router

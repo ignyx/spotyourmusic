@@ -3,5 +3,11 @@ extends layout
 block content
   h1 Spot your music
   p Welcome to this SpotYourMusic server. Use it wisely.
-  span Current job count: 
+  span Current job count:
     b= title
+
+  form(action='/spotify')
+    h3 Spotify lookup
+    label(for='url') Url :
+    input(type='text' name='url' placeholder='https://open.spotify.com/...')
+    input(type='submit')
