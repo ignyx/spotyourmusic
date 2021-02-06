@@ -16,6 +16,7 @@ module.exports.addYoutubeJob = async (videoId, title) => {
     title: title,
     status: 'queued'
   }).rpush('queue', id).exec()
+  return id
 }
 
 /**
