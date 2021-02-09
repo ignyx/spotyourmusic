@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Jobs
 
-  h2 Queued
+  h2 Queued (next 100)
   if queued.length
     table
       tr
@@ -19,7 +19,7 @@ block content
   else
     p none
 
-  h2 Failed
+  h2 Failed (last 100)
   if failed.length
     table
       tr
@@ -35,7 +35,7 @@ block content
   else
     p none
 
-  h2 Finished
+  h2 Finished (last 100)
   table
     tr
       th id
