@@ -59,7 +59,11 @@ async function dealWithNextJob() {
           .lpush('failed', jobId)
           .exec()
         console.log('removing file for job ' + jobId)
-        fs.unlinkSync(`${__dirname}/public/tracks/${jobId}.mp3`)
+        try {
+          fs.unlinkSync(`${__dirname}/public/tracks/${jobId}.mp3`)
+        } catch (err) {
+          console.log(`failed to delete file for job ${jobId} (file may not exist)`)
+        }
       }
     }
   }
