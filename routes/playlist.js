@@ -42,4 +42,23 @@ router.get('/:id/queue', async (req, res) => {
   res.redirect(`/playlist/${req.params.id}/`)
 })
 
+// Provides m3u playlist file
+router.get('/:id/file', async (req, res) => {
+  try {
+    var playlist = await spotify.getPlaylist(req.params.id)
+    var result = '#EXTM3U\n'
+    result += `#PLAYLIST:${playlist.name}\n`
+    playlist.tracks.forEach((track) => {
+      if (track.job)
+        result += `./${track.job}.mp3\n`
+    });
+    res.setHeader('Content-type', 'audio/x-mpegurl');
+    res.setHeader('Content-Disposition', `attachment; filename="${playlist.name.replace(/\W/g, '')}.m3u"`)
+    res.send(result)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Failed. May be an invalid ID')
+  }
+})
+
 module.exports = router
