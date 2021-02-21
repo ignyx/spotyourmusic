@@ -61,4 +61,15 @@ router.get('/:id/file', async (req, res) => {
   }
 })
 
+router.get('/:id/refresh', async (req, res) => {
+  if (!req.params.id) return res.end('no id???')
+  try {
+    await spotify.forgetPlaylist(req.params.id)
+    res.redirect(`/playlist/${req.params.id}/`)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Failed. <a href="../">Back?</a>')
+  }
+})
+
 module.exports = router
