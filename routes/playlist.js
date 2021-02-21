@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const spotify = require('../services/spotify')
 const jobs = require('../services/jobs')
+const controller = require('./controllers/playlist')
 
 // HTML page with playlist info
 router.get('/:id/', async (req, res) => {
@@ -16,6 +17,19 @@ router.get('/:id/', async (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed. May be an invalid ID')
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    let playlists = await controller.getAll(req.redis)
+    res.render('playlists', {
+      title: 'All seen playlists',
+      playlists: playlists
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Server-side error')
   }
 })
 
