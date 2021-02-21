@@ -15,5 +15,5 @@ block content
           img(src=playlist.coverUrl, width=80)
         td #{playlist.owner}
         td
-          a(href=playlist.id) #{playlist.name}
+          a(href='/playlist/' + playlist.id) #{playlist.name}
         td #{playlist.tracks.split(' ').length - 1}
