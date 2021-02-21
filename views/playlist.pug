@@ -22,5 +22,6 @@ block content
         td
           img(src=track.coverUrl)
         td #{track.artist}
-        td #{track.title}
+        td
+          a(href=`/track/${track.id}/`) #{track.title}
         td #{track.available}
