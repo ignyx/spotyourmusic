@@ -20,6 +20,20 @@ router.get('/:id/', async (req, res) => {
   }
 })
 
+// JSON with playlist info
+router.get('/:id/json', async (req, res) => {
+  try {
+    var playlist = await spotify.getPlaylist(req.params.id)
+    playlist.success = true
+    res.json(playlist)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      success: false
+    })
+  }
+})
+
 router.get('/', async (req, res) => {
   try {
     let playlists = await controller.getAll(req.redis)
