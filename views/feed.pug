@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1= title
+  a(href=`/feed/${id}/feed.xml`) RSS Feed
 
   form(method='POST')
     h3 Add Episode
