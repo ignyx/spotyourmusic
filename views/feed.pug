@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST')
+    h3 Add Episode
+    label(for='videoId') Youtube Video Id
+    input(type='text' id='videoId' name='videoId')
+    input(type='submit')
+
+  h2 Episodes
+  if episodes.length > 0
+    table
+      tr
+        th Author
+        th Title
+        th Added
+      each episode in episodes
+        tr
+          td #{episode.author}
+          td #{episode.title}
+          td #{episode.DateAdded}
+  else
+    p No episodes :( Maybe add some?

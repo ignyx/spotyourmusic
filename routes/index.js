@@ -7,6 +7,7 @@ const jobs = require('../services/jobs')
 const playlistRouter = require('./playlist')
 const jobsRouter = require('./jobs')
 const trackRouter = require('./track')
+const feedRouter = require('./rss')
 
 // define the home page route
 router.get('/', async function(req, res) {
@@ -24,6 +25,7 @@ router.use((req, res, next) => {
 router.use('/playlist', playlistRouter)
 router.use('/jobs', jobsRouter)
 router.use('/track', trackRouter)
+router.use('/feed', feedRouter)
 
 const spotifyPlaylistBaseUrl = 'https://open.spotify.com/playlist/'
 
