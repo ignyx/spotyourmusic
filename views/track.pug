@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  img(src=coverUrl)
+  p #{artist}
+  p #{album}
+  p Available : #{available}
+
+  a(href='/track/' + id + '/queue')
+    button Add to queue
+  br
+  a(href='/jobs') View queue
+  br
+  a(href=`/tracks/${job}.mp3`, download=`${artist}-${title}.mp3`) Download

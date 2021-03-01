@@ -74,6 +74,7 @@ module.exports.getPlaylist = async (id) => {
     }
 
     await redis.hset('playlist' + id, {
+      id: id,
       name: diacritics.removeDiacritics(data.name), // Remove accents that mess things up
       owner: diacritics.removeDiacritics(data.owner.display_name),
       coverUrl: data.images[0].url,

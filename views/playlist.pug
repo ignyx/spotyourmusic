@@ -4,9 +4,16 @@ block content
   h1= title
 
   a(href='/playlist/' + id + '/queue')
-    button Add to queue
+    button Add to Queue
   br
-  a(href='/jobs') View queue
+  a(href='/jobs') View Queue
+  br
+  a(href='/playlist/' + id + '/file') Download Playlist File
+  br
+  label(for='timeBetweenTracks') Time to wait between track downloads
+  input(id='timeBetweenTracks', type='number', value='1')
+  br
+  button(onClick='downloadPlaylist()') Download available tracks
 
   h2 Tracks
   table
@@ -20,5 +27,10 @@ block content
         td
           img(src=track.coverUrl)
         td #{track.artist}
-        td #{track.title}
+        td
+          a(href=`/track/${track.id}/`) #{track.title}
         td #{track.available}
+
+  script id = '#{id}'
+  script(src='/static/FileSaver.min.js')
+  script(src='/static/download.js')
