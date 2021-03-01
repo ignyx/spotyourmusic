@@ -55,6 +55,9 @@ router.get('/:id/feed.xml', async (req, res) => {
         title: episode.title,
         description: episode.description,
         url: `${BASE_URL}/tracks/${episode.jobId}.mp3`,
+        enclosure: {
+          url: `${BASE_URL}/tracks/${episode.jobId}.mp3`
+        },
         date: episode.dateAdded
       })
     })
