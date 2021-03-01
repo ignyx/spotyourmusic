@@ -16,10 +16,13 @@ block content
         th Author
         th Title
         th Added
+        th Job
       each episode in episodes
         tr
           td #{episode.author}
           td #{episode.title}
           td #{episode.DateAdded}
+          td
+            a(href=`/jobs/${episode.jobId}/`) #{episode.jobId}
   else
     p No episodes :( Maybe add some?
