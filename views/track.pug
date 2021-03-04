@@ -6,6 +6,7 @@ block content
   p #{artist}
   p #{album}
   p Available : #{available}
+  p Size : #{sizeMb}
 
   a(href='/track/' + id + '/queue')
     button Add to queue
@@ -14,4 +15,5 @@ block content
   br
   a(href=`/tracks/${job}.mp3`, download=`${artist}-${title}.mp3`) Download
   br
-  a(href='/track/' + id + '/remove') Remove
+  if available === 'true'
+    a(href='/track/' + id + '/remove') Remove

@@ -7,6 +7,7 @@ const redis = new Redis();
 const {
   exec
 } = require("child_process");
+const formatBytes = require('./services/formatBytes')
 
 // If 'active' is true, worker is working or has crashed.
 // 'current' is the current job number.
@@ -117,7 +118,7 @@ async function spotifyJob(jobId, trackId, videoId) {
   var meta = await redis.hgetall('track' + trackId)
   if (!meta) throw new Error('No metadata')
 
-  if (meta.available) return console.log('-- Track already available for job ' + jobId)
+  if (meta.available === 'true') return console.log('-- Track already available for job ' + jobId)
 
   console.log('Fetching cover image for job ' + jobId)
   // Retrieve cover image
@@ -165,8 +166,8 @@ async function spotifyJob(jobId, trackId, videoId) {
   fs.unlinkSync(coverImage)
 
   let size = getJobFileSize(jobId)
-  let sizeMb = (Math.round(size * 10) / 10) + ' MB'
-  await redis.hset('track' + trackId, 'available', true, 'job', jobId, 'size', size, 'sizeMb', sizeMb)
+  let sizeString = formatBytes(size)
+  await redis.hset('track' + trackId, 'available', true, 'job', jobId, 'size', size, 'sizeMb', sizeString)
   console.log('-- Successfully delt with job ' + jobId)
 }
 
@@ -179,9 +180,9 @@ async function work() {
 }
 
 function getJobFileSize(id) {
-  var stats = fs.statSync(`${__dirname}/public/tracks/${jobId}.mp3`);
-  var fileSizeInBytes = stats.size;
-  return fileSizeInBytes;
+  var stats = fs.statSync(`${__dirname}/public/tracks/${id}.mp3`)
+  var fileSizeInBytes = stats.size
+  return fileSizeInBytes
 }
 
 work()
