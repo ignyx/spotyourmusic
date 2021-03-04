@@ -13,7 +13,8 @@ router.get('/:id/', async (req, res) => {
       id: req.params.id,
       name: playlist.name,
       title: 'Playlist ' + playlist.name,
-      tracks: playlist.tracks
+      tracks: playlist.tracks,
+      size: playlist.sizeMb
     })
   } catch (err) {
     console.log(err)
@@ -93,7 +94,7 @@ router.get('/:id/remove', async (req, res) => {
 
   try {
     await remove.playlist(req.redis, req.params.id)
-    res.redirect(`/playlist/${req.params.id}/`)
+    res.redirect(req.query.redirect ? req.query.redirect : `/track/${req.params.id}/`)
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed. May be an invalid ID')

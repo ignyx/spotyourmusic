@@ -1,6 +1,7 @@
 const Spotify = require('node-spotify-api');
 const diacritics = require('../diacritics')
 const Redis = require("ioredis");
+const formatBytes = require('./formatBytes')
 const redis = new Redis();
 
 var spotify = new Spotify({
@@ -68,7 +69,7 @@ module.exports.getPlaylist = async (id) => {
     var ids = '' // For Redis track id list
 
     for (i = 0; i < data.tracks.items.length; i++) {
-      track =  data.tracks.items[i].track
+      track = data.tracks.items[i].track
       await cacheTrackMetadata(track)
       ids += track.id + ' '
     }
@@ -88,8 +89,16 @@ module.exports.getPlaylist = async (id) => {
   data.tracks.split(' ').forEach((track) => {
     if (track) pipeline.hgetall('track' + track)
   });
-  data.tracks = Array.from(await pipeline.exec(), result => result[1]) // Executes pipeline, excluding the error.
 
+  var size = 0
+  data.tracks = Array.from(await pipeline.exec(), result => {
+    if (result[1].size)
+      size += parseInt(result[1].size)
+    return result[1]
+  }) // Executes pipeline, excluding the error.
+
+  data.size = size
+  data.sizeMb = formatBytes(size)
   return data
 }
 

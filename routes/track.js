@@ -30,7 +30,7 @@ router.get('/:id/remove', async (req, res) => {
 
   try {
     await remove.track(req.redis, req.params.id)
-    res.redirect(`/track/${req.params.id}/`)
+    res.redirect(req.query.redirect ? req.query.redirect : `/track/${req.params.id}/`)
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed. May be an invalid ID')

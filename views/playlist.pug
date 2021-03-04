@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
 
+
+  p Size : #{size}
   a(href='/playlist/' + id + '/queue')
     button Add to Queue
   br
@@ -29,7 +31,8 @@ block content
     each track in tracks
       tr
         td
-          a(href=`/track/${track.id}/remove`) [x]
+          if track.available === 'true'
+            a(href=`/track/${track.id}/remove?redirect=/playlist/${id}`) [x]
         td #{track.available}
         td #{track.sizeMb}
         td

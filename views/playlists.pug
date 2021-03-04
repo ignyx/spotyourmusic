@@ -5,12 +5,15 @@ block content
 
   table
     tr
+      th Remove
       th
       th Owner
       th Name
       th Number of tracks
     each playlist in playlists
       tr
+        td
+          a(href=`/playlist/${playlist.id}/remove?redirect=/playlist/`) [x]
         td
           img(src=playlist.coverUrl, width=80, alt='playlist image')
         td #{playlist.owner}
