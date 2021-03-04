@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  table
+    tr
+      th Name
+      th Number of Episodes
+    each feed in feeds
+      tr
+        td
+          a(href='/feed/' + feed.id) #{feed.id}
+        td #{feed.episodeNumber}

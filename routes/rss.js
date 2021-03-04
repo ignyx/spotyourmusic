@@ -5,6 +5,20 @@ const Podcast = require('podcast')
 
 const BASE_URL = process.env.SPOTYOURMUSIC_BASE_URL
 
+// HTML page with all feeds
+router.get('/', async (req, res) => {
+  try {
+    var feeds = await controller.getAll(req.redis)
+    res.render('feeds', {
+      title: 'All Feeds',
+      feeds: feeds
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Failed.')
+  }
+})
+
 // HTML page with feed info
 router.get('/:id/', async (req, res) => {
   if (!/^[a-z0-9]+$/i.test(req.params.id)) // Checks if feed is alphanumerical

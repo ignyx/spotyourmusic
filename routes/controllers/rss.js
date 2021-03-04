@@ -30,3 +30,25 @@ module.exports.getFeed = async (redis, feed) => {
   })
   return Array.from(await pipeline.exec(), result => result[1])
 }
+
+// Fetches all feeds
+module.exports.getAll = async (redis) => {
+  let keys = await redis.keys('feed*')
+
+  // Fetch every feed length in one transaction
+  let pipeline = redis.pipeline()
+  keys.forEach((key) => {
+    if (key) pipeline.llen(key)
+  })
+  let res = await pipeline.exec()
+  // Goes through
+  var feeds = []
+  keys.forEach((key, i) => {
+    feeds.push({
+      id: key.split('feed')[1],
+      episodeNumber: res[i][1]
+    })
+  })
+
+  return feeds
+}
