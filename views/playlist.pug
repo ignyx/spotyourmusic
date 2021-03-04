@@ -20,18 +20,23 @@ block content
   h2 Tracks
   table
     tr
+      th Remove
+      th Available
+      th Size
       th
       th Artist
       th Title
-      th Available
     each track in tracks
       tr
+        td
+          a(href=`/track/${track.id}/remove`) [x]
+        td #{track.available}
+        td #{track.sizeMb}
         td
           img(src=track.coverUrl, alt='cover')
         td #{track.artist}
         td
           a(href=`/track/${track.id}/`) #{track.title}
-        td #{track.available}
 
   script id = '#{id}'
   script(src='/static/FileSaver.min.js')
