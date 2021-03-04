@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const spotify = require('../services/spotify')
 const jobs = require('../services/jobs')
+const remove = require('../services/remove')
 const controller = require('./controllers/playlist')
 
 // HTML page with playlist info
@@ -83,6 +84,19 @@ router.get('/:id/refresh', async (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed. <a href="../">Back?</a>')
+  }
+})
+
+// Removes all tracks from said playlist. Redirects to playlist page.
+router.get('/:id/remove', async (req, res) => {
+  if (!req.params.id) return res.end('no id???')
+
+  try {
+    await remove.playlist(req.redis, req.params.id)
+    res.redirect(`/playlist/${req.params.id}/`)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Failed. May be an invalid ID')
   }
 })
 
