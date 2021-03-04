@@ -12,7 +12,7 @@ block content
     each playlist in playlists
       tr
         td
-          img(src=playlist.coverUrl, width=80)
+          img(src=playlist.coverUrl, width=80, alt='playlist image')
         td #{playlist.owner}
         td
           a(href='/playlist/' + playlist.id) #{playlist.name}

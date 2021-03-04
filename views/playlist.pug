@@ -25,7 +25,7 @@ block content
     each track in tracks
       tr
         td
-          img(src=track.coverUrl)
+          img(src=track.coverUrl, alt='cover')
         td #{track.artist}
         td
           a(href=`/track/${track.id}/`) #{track.title}
