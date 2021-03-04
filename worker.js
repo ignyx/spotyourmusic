@@ -163,8 +163,11 @@ async function spotifyJob(jobId, trackId, videoId) {
   })
   console.log('removing cover for job ' + jobId)
   fs.unlinkSync(coverImage)
+
+  let size = getJobFileSize(jobId)
+  let sizeMb = (Math.round(size * 10) / 10) + ' MB'
+  await redis.hset('track' + trackId, 'available', true, 'job', jobId, 'size', size, 'sizeMb', sizeMb)
   console.log('-- Successfully delt with job ' + jobId)
-  await redis.hset('track' + trackId, 'available', true, 'job', jobId, 'size', getJobFileSize(jobId))
 }
 
 // works until redis tells it not to
