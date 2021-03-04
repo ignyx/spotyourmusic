@@ -69,6 +69,10 @@ async function dealWithNextJob() {
     }
   }
   await redis.set('active', false)
+  // Update library size on disk
+  let librarySize = await getLibrarySize()
+  await redis.mset('size', librarySize, 'sizeMb', formatBytes(librarySize))
+
   return await new Promise((resolve) => {
     setTimeout(resolve, 1000)
   }) // wait 1 sec
@@ -183,6 +187,23 @@ function getJobFileSize(id) {
   var stats = fs.statSync(`${__dirname}/public/tracks/${id}.mp3`)
   var fileSizeInBytes = stats.size
   return fileSizeInBytes
+}
+
+// Calculates from redis the total theoretical amount of space taken by tracks
+async function getLibrarySize(id) {
+  let jobs = await redis.keys('job*') // May be long on large sets
+  var pipeline = redis.pipeline()
+  jobs.forEach((job, i) => {
+    pipeline.hmget(job, 'status', 'size')
+  });
+
+  var total = 0;
+  (await pipeline.exec()).forEach((result, i) => {
+    if (!result[0] && result[1][0] === 'finished' && result[1][1]) // no error & available & size is calculated
+      total += parseInt(result[1][1]) // size
+  });
+
+  return total
 }
 
 work()

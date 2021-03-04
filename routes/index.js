@@ -13,6 +13,7 @@ const feedRouter = require('./rss')
 router.get('/', async function(req, res) {
   res.render('index', {
     title: await redis.get('jobcount'),
+    size: await redis.get('sizeMb'),
     message: 'Hello there!'
   })
 })
