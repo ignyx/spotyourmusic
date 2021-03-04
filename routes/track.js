@@ -24,6 +24,7 @@ router.get('/:id/queue', async (req, res) => {
   res.redirect(`/track/${req.params.id}/`)
 })
 
+// Removes said track. Redirects to track page.
 router.get('/:id/remove', async (req, res) => {
   if (!req.params.id) return res.end('no id???')
 
