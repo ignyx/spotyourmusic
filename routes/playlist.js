@@ -95,6 +95,7 @@ router.get('/:id/remove', async (req, res) => {
 
   try {
     await remove.playlist(req.redis, req.params.id)
+    await spotify.forgetPlaylist(req.params.id)
     res.redirect(req.query.redirect ? req.query.redirect : `/track/${req.params.id}/`)
   } catch (err) {
     console.log(err)
