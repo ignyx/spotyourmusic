@@ -12,4 +12,5 @@ block content
     img(src=track.coverUrl, alt='cover')
     p Artist : #{track.artist}
     p Album : #{track.album}
-    p Title : #{track.title}
+    p Title : 
+      a(href='/track/' + track.id) #{track.title}
