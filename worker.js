@@ -47,7 +47,7 @@ async function dealWithNextJob() {
             throw new Error('Invalid job type')
         }
         await redis.pipeline()
-          .hset('job' + jobId, 'status', 'finished')
+          .hset('job' + jobId, 'status', 'finished', 'size', getJobFileSize(jobId))
           .lpush('finished', jobId)
           .exec()
 
@@ -164,7 +164,7 @@ async function spotifyJob(jobId, trackId, videoId) {
   console.log('removing cover for job ' + jobId)
   fs.unlinkSync(coverImage)
   console.log('-- Successfully delt with job ' + jobId)
-  await redis.hset('track' + trackId, 'available', true, 'job', jobId)
+  await redis.hset('track' + trackId, 'available', true, 'job', jobId, 'size', getJobFileSize(jobId))
 }
 
 // works until redis tells it not to
@@ -173,6 +173,12 @@ async function work() {
     await dealWithNextJob()
   await redis.set('stop', false)
   redis.quit()
+}
+
+function getJobFileSize(id) {
+  var stats = fs.statSync(`${__dirname}/public/tracks/${jobId}.mp3`);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes;
 }
 
 work()
