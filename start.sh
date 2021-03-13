@@ -1,5 +1,5 @@
 #!/bin/sh
-
+. ~/.profile
 echo "Stopping previous session"
 sh stop.sh > /dev/null
 
@@ -15,4 +15,4 @@ tmux \
   "cd data && redis-server ; read" \; \
   split-window "node worker.js ; read" \; \
   split-window "node index.js ; read" \; \
-  #select-layout even-vertical		 		 
+  #select-layout even-vertical
