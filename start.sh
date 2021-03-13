@@ -4,6 +4,7 @@ echo "Stopping previous session"
 sh stop.sh > /dev/null
 
 mkdir -p data 								 # Creates data folder, if it doesn't exist
+mkdir -p public/tracks
 
 # Starts a tmux session named "spotyourmusic" and detaches
 # Starts Redis instance, worker and webserver
