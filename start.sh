@@ -1,5 +1,5 @@
 #!/bin/sh
-. ~/.profile
+
 echo "Stopping previous session"
 sh stop.sh > /dev/null
 
@@ -14,5 +14,5 @@ tmux \
   new-session -d -s "spotyourmusic" \
   "cd data && redis-server ; read" \; \
   split-window "node worker.js ; read" \; \
-  split-window "node index.js ; read" \; \
+  split-window ". ~/.profile && node index.js ; read" \; \
   #select-layout even-vertical
