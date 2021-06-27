@@ -45,7 +45,7 @@ router.post('/:id/', async (req, res) => {
   videoId = req.body.videoId
 
   if (videoId.includes(youtubeVideoBaseUrl))
-     videoId = videoId.split(youtubeVideoBaseUrl)[1].split('&')[0]) // Extracts video Id from url
+     videoId = videoId.split(youtubeVideoBaseUrl)[1].split('&')[0] // Extracts video Id from url
 
   try {
     await controller.addEpisode(req.redis, req.params.id, videoId)
