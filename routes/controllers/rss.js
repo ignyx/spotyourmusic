@@ -24,7 +24,7 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
 
 // Remove rss episode on disk and from feed data on Redis
 module.exports.removeEpisode = async (redis, feed, jobId) => {
-  await redis.lrem('feed' + feed, jobId)
+  await redis.lrem('feed' + feed, 1, jobId)
   await remove.job(redis, jobId)
   return jobId
 }
