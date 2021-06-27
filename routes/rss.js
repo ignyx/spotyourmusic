@@ -36,12 +36,19 @@ router.get('/:id/', async (req, res) => {
   }
 })
 
+const youtubeVideoBaseUrl = 'https://www.youtube.com/watch?v='
+
 // Adds said episode. Redirects to feed page.
 router.post('/:id/', async (req, res) => {
   if (!req.params.id) return res.end('no id???')
   if (!req.body.videoId) return res.end('No video Id')
+  videoId = req.body.videoId
+
+  if (videoId.includes(youtubeVideoBaseUrl))
+     videoId = videoId.split(youtubeVideoBaseUrl)[1].split('&')[0]) // Extracts video Id from url
+
   try {
-    await controller.addEpisode(req.redis, req.params.id, req.body.videoId)
+    await controller.addEpisode(req.redis, req.params.id, videoId)
     res.redirect(`/feed/${req.params.id}/`)
   } catch (err) {
     console.log(err)
