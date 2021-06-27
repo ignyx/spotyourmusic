@@ -14,12 +14,15 @@ block content
   if episodes.length > 0
     table
       tr
+        th Remove
         th Author
         th Title
         th Added
         th Job
       each episode in episodes
         tr
+          td
+            a(href=`/feed/${id}/${episode.jobId}/remove`) [x]
           td #{episode.author}
           td #{episode.title}
           td #{episode.dateAdded}

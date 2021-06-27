@@ -1,4 +1,5 @@
 const jobs = require('../../services/jobs')
+const remove = require('../../services/remove')
 const yts = require('yt-search')
 const diacritics = require('../../diacritics')
 
@@ -19,6 +20,13 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
       jobId: jobId
     }).lpush('feed' + feed, jobId).exec()
     return jobId
+}
+
+// Remove rss episode on disk and from feed data on Redis
+module.exports.removeEpisode = async (redis, feed, jobId) => {
+  await redis.lrem('feed' + feed, jobId)
+  await remove.job(redis, jobId)
+  return jobId
 }
 
 // Fetches rss episode info from redis

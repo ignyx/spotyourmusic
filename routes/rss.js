@@ -49,6 +49,19 @@ router.post('/:id/', async (req, res) => {
   }
 })
 
+// Removes said episode from feed. Redirects to feed page.
+router.get('/:id/:jobId/remove', async (req, res) => {
+  if (!req.params.id) return res.end('no id???')
+  if (!req.body.jobId) return res.end('No job Id')
+  try {
+    await controller.removeEpisode(req.redis, req.params.id, req.body.jobId)
+    res.redirect(`/feed/${req.params.id}/`)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end('Failed.')
+  }
+})
+
 // RSS Feed with feed info
 router.get('/:id/feed.xml', async (req, res) => {
   if (!/^[a-z0-9]+$/i.test(req.params.id)) // Checks if feed is alphanumerical
