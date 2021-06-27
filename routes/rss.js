@@ -54,7 +54,7 @@ router.get('/:id/:jobId/remove', async (req, res) => {
   if (!req.params.id) return res.end('no id???')
   if (!req.params.jobId) return res.end('No job Id')
   try {
-    await controller.removeEpisode(req.redis, req.params.id, req.body.jobId)
+    await controller.removeEpisode(req.redis, req.params.id, req.params.jobId)
     res.redirect(`/feed/${req.params.id}/`)
   } catch (err) {
     console.log(err)
