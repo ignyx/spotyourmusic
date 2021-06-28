@@ -24,17 +24,17 @@ router.all('/:id/*?', (req, res, next) => {
   if (!/^[a-z0-9]{1,32}$/i.test(req.params.id)) // Checks if feed is alphanumerical
     return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive, 1-32 characters. Example: Foo7Bar')
   // Converts numbers to strings, makes them toLowerCase for case-insensitive keys in Redis
-  req.params.id = req.params.id.toString().toLowerCase()
+  req.feedId = req.params.id.toString().toLowerCase()
   next()
 })
 
 // HTML page with feed info
 router.get('/:id/', async (req, res) => {
   try {
-    var episodes = await controller.getFeed(req.redis, req.params.id)
+    var episodes = await controller.getFeed(req.redis, req.feedId)
     res.render('feed', {
-      id: req.params.id,
-      title: 'Feed ' + req.params.id,
+      id: req.feedId,
+      title: 'Feed ' + req.feedId,
       episodes: episodes
     })
   } catch (err) {
@@ -54,8 +54,8 @@ router.post('/:id/', async (req, res) => {
      videoId = videoId.split(youtubeVideoBaseUrl)[1].split('&')[0] // Extracts video Id from url
 
   try {
-    await controller.addEpisode(req.redis, req.params.id, videoId)
-    res.redirect(`/feed/${req.params.id}/`)
+    await controller.addEpisode(req.redis, req.feedId, videoId)
+    res.redirect(`/feed/${req.feedId}/`)
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed.')
@@ -66,8 +66,8 @@ router.post('/:id/', async (req, res) => {
 router.get('/:id/:jobId/remove', async (req, res) => {
   if (!req.params.jobId) return res.end('No job Id')
   try {
-    await controller.removeEpisode(req.redis, req.params.id, req.params.jobId)
-    res.redirect(`/feed/${req.params.id}/`)
+    await controller.removeEpisode(req.redis, req.feedId, req.params.jobId)
+    res.redirect(`/feed/${req.feedId}/`)
   } catch (err) {
     console.log(err)
     res.status(500).end('Failed.')
@@ -77,12 +77,12 @@ router.get('/:id/:jobId/remove', async (req, res) => {
 // RSS Feed with feed info
 router.get('/:id/feed.xml', async (req, res) => {
   try {
-    var episodes = await controller.getFeed(req.redis, req.params.id)
+    var episodes = await controller.getFeed(req.redis, req.feedId)
     const feed = new Podcast({
-      title: req.params.id,
+      title: req.feedId,
       description: 'Custom Podcast feed, by spot your music',
-      feed_url: `${BASE_URL}/feed/${req.params.id}/feed.xml`,
-      site_url: `${BASE_URL}/feed/${req.params.id}/`,
+      feed_url: `${BASE_URL}/feed/${req.feedId}/feed.xml`,
+      site_url: `${BASE_URL}/feed/${req.feedId}/`,
       author: 'SpotYourMusic'
     })
 
