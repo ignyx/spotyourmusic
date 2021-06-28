@@ -19,10 +19,16 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.all('/:id/*', (req, res) => {
+  if (!req.params.id) return res.end('no id???')
+  if (!/^[a-z0-9]{1,32}$/i.test(req.params.id)) // Checks if feed is alphanumerical
+    return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive, 1-32 characters. Example: Foo7Bar')
+  // Converts numbers to strings, makes them toLowerCase for case-insensitive keys in Redis
+  req.params.id = req.params.id.toString().toLowerCase()
+})
+
 // HTML page with feed info
 router.get('/:id/', async (req, res) => {
-  if (!/^[a-z0-9]+$/i.test(req.params.id)) // Checks if feed is alphanumerical
-    return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive. Example: Foo7Bar')
   try {
     var episodes = await controller.getFeed(req.redis, req.params.id)
     res.render('feed', {
@@ -40,9 +46,8 @@ const youtubeVideoBaseUrl = 'https://www.youtube.com/watch?v='
 
 // Adds said episode. Redirects to feed page.
 router.post('/:id/', async (req, res) => {
-  if (!req.params.id) return res.end('no id???')
   if (!req.body.videoId) return res.end('No video Id')
-  videoId = req.body.videoId
+  let videoId = req.body.videoId
 
   if (videoId.includes(youtubeVideoBaseUrl))
      videoId = videoId.split(youtubeVideoBaseUrl)[1].split('&')[0] // Extracts video Id from url
@@ -58,7 +63,6 @@ router.post('/:id/', async (req, res) => {
 
 // Removes said episode from feed. Redirects to feed page.
 router.get('/:id/:jobId/remove', async (req, res) => {
-  if (!req.params.id) return res.end('no id???')
   if (!req.params.jobId) return res.end('No job Id')
   try {
     await controller.removeEpisode(req.redis, req.params.id, req.params.jobId)
@@ -71,8 +75,6 @@ router.get('/:id/:jobId/remove', async (req, res) => {
 
 // RSS Feed with feed info
 router.get('/:id/feed.xml', async (req, res) => {
-  if (!/^[a-z0-9]+$/i.test(req.params.id)) // Checks if feed is alphanumerical
-    return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive. Example: Foo7Bar')
   try {
     var episodes = await controller.getFeed(req.redis, req.params.id)
     const feed = new Podcast({
