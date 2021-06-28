@@ -19,12 +19,13 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.all('/:id/*', (req, res) => {
+router.all('/:id/*', (req, res, next) => {
   if (!req.params.id) return res.end('no id???')
   if (!/^[a-z0-9]{1,32}$/i.test(req.params.id)) // Checks if feed is alphanumerical
     return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive, 1-32 characters. Example: Foo7Bar')
   // Converts numbers to strings, makes them toLowerCase for case-insensitive keys in Redis
   req.params.id = req.params.id.toString().toLowerCase()
+  next()
 })
 
 // HTML page with feed info
