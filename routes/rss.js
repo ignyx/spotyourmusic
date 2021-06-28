@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.all('/:id/*', (req, res, next) => {
+router.all('/:id/*?', (req, res, next) => {
   if (!req.params.id) return res.end('no id???')
   if (!/^[a-z0-9]{1,32}$/i.test(req.params.id)) // Checks if feed is alphanumerical
     return res.status(400).end('Invalid Id. Alphanumerical please, case-insensitive, 1-32 characters. Example: Foo7Bar')
