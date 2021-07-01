@@ -4,9 +4,13 @@ const {
 
 // Remove file corresponding to given job and marks in redis as deleted
 module.exports.job = async (redis, id) => {
-  await unlink(`${process.cwd()}/public/tracks/${id}.mp3`)
-  await redis.hset('job' + id, 'status', 'deleted')
-  console.log('Removed file for job ' + id)
+  try {
+    await unlink(`${process.cwd()}/public/tracks/${id}.mp3`)
+    await redis.hset('job' + id, 'status', 'deleted')
+    console.log('Removed file for job ' + id)
+  } catch (err) {
+    console.log(`Failed to remove file for job ${id} (file may be missing):` + err)
+  }
 }
 
 // Remove track from disk and mark as unavailable
