@@ -37,16 +37,16 @@ module.exports.getFeed = async (redis, feed) => {
   episodes.forEach(episodeId => {
     if (episodeId) pipeline.hgetall('episode' + episodeId)
   })
-  let feed = Array.from(await pipeline.exec(), result => result[1])
+  let feedEpisodes = Array.from(await pipeline.exec(), result => result[1])
 
   // Fetch job status
   let jobPipeline = redis.pipeline()
-  feed.forEach((episode) => {
+  feedEpisodes.forEach((episode) => {
     jobPipeline.hgetall('job' + episode.jobId)
   });
 
   (await jobPipeline.exec()).forEach((job, i) => {
-    feed[i].job = job
+    feedEpisodes[i].job = job
   });
 
   return feed
