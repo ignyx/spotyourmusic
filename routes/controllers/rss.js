@@ -46,9 +46,9 @@ module.exports.getFeed = async (redis, feed) => {
   });
 
   (await jobPipeline.exec()).forEach((job, i) => {
-    feedEpisodes[i].job = job
+    feedEpisodes[i].job = job[1]
   });
-  console.log(feedEpisodes)
+  
   return feedEpisodes
 }
 
