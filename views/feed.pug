@@ -6,7 +6,7 @@ block content
 
   form(method='POST')
     h3 Add Episode
-    label(for='videoId') Youtube Video Id or url : 
+    label(for='videoId') Youtube Video Id or url :
     input(type='text' id='videoId' name='videoId')
     input(type='submit')
 
@@ -19,6 +19,7 @@ block content
         th Title
         th Added
         th Job
+        th Job status
       each episode in episodes
         tr
           td
@@ -28,5 +29,6 @@ block content
           td #{episode.dateAdded}
           td
             a(href=`/jobs/${episode.jobId}/`) #{episode.jobId}
+          td #{episode.job.status}
   else
     p No episodes :( Maybe add some?

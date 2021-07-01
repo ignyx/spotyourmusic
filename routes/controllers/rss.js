@@ -33,10 +33,23 @@ module.exports.removeEpisode = async (redis, feed, jobId) => {
 module.exports.getFeed = async (redis, feed) => {
   let episodes = await redis.lrange('feed' + feed, 0, 1000)
   let pipeline = redis.pipeline()
+  // Fetch episodes
   episodes.forEach(episodeId => {
     if (episodeId) pipeline.hgetall('episode' + episodeId)
   })
-  return Array.from(await pipeline.exec(), result => result[1])
+  let feed = Array.from(await pipeline.exec(), result => result[1])
+
+  // Fetch job status
+  let jobPipeline = redis.pipeline()
+  feed.forEach((episode) => {
+    jobPipeline.hgetall('job' + episode.jobId)
+  });
+
+  (await jobPipeline.exec()).forEach((job, i) => {
+    feed[i].job = job
+  });
+
+  return feed
 }
 
 // Fetches all feeds
