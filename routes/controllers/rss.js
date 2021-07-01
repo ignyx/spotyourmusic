@@ -49,7 +49,7 @@ module.exports.getFeed = async (redis, feed) => {
     feedEpisodes[i].job = job
   });
 
-  return feed
+  return feedEpisodes
 }
 
 // Fetches all feeds
