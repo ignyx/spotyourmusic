@@ -77,7 +77,7 @@ router.get('/:id/:jobId/remove', async (req, res) => {
 // RSS Feed with feed info
 router.get('/:id/feed.xml', async (req, res) => {
   try {
-    var episodes = await controller.getFeed(req.redis, req.feedId)
+    const episodes = await controller.getFeed(req.redis, req.feedId)
     const feed = new Podcast({
       title: req.feedId,
       description: 'Custom Podcast feed, by spot your music',
@@ -88,15 +88,16 @@ router.get('/:id/feed.xml', async (req, res) => {
 
     /* loop over data and add to feed */
     episodes.forEach((episode, i) => {
-      feed.addItem({
-        title: episode.title,
-        description: episode.description,
-        url: `${BASE_URL}/tracks/${episode.jobId}.mp3`,
-        enclosure: {
-          url: `${BASE_URL}/tracks/${episode.jobId}.mp3`
-        },
-        date: episode.dateAdded
-      })
+      if (episode.job.status === 'finished') // Exclude failed or queued jobs
+        feed.addItem({
+          title: episode.title,
+          description: episode.description,
+          url: `${BASE_URL}/tracks/${episode.jobId}.mp3`,
+          enclosure: {
+            url: `${BASE_URL}/tracks/${episode.jobId}.mp3`
+          },
+          date: episode.dateAdded
+        })
     })
 
     // TODO cache the xml to send to clients
