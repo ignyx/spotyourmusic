@@ -12,6 +12,7 @@ router.get('/', async (req, res) => {
     finished: allJobs.finished,
     queued: allJobs.queue,
     failed: allJobs.failed,
+    latest: allJobs.latest,
     title: 'Jobs'
   })
 })
