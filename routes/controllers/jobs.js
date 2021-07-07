@@ -23,5 +23,7 @@ module.exports.getAll = async (redis) => {
   });
   jobs.failed = Array.from(await failedPipeline.exec(), result => result[1])
 
+  jobs.latest = await redis.get('latest')
+
   return jobs
 }

@@ -3,6 +3,8 @@ extends layout
 block content
   h1 Jobs
 
+  p latest : #{latest}
+
   h2 Queued (next 100)
   if queued.length
     table
