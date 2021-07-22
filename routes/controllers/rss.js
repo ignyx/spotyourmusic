@@ -10,16 +10,17 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
   })
   let title = diacritics.removeDiacritics(video.title)
   let jobId = await jobs.addYoutubeJob(videoId, title)
+  let author = diacritics.removeDiacritics(video.author.name)
   await redis.pipeline()
     .hset('episode' + jobId, {
-      title: title,
+      title: `${author} : ${title}`,
       videoId: videoId,
-      author: diacritics.removeDiacritics(video.author.name),
+      author: author,
       description: diacritics.removeDiacritics(video.description),
       dateAdded: new Date().toString(),
       jobId: jobId
     }).lpush('feed' + feed, jobId).exec()
-    return jobId
+  return jobId
 }
 
 // Remove rss episode on disk and from feed data on Redis
@@ -48,7 +49,7 @@ module.exports.getFeed = async (redis, feed) => {
   (await jobPipeline.exec()).forEach((job, i) => {
     feedEpisodes[i].job = job[1]
   });
-  
+
   return feedEpisodes
 }
 
