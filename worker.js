@@ -4,6 +4,7 @@ const youtube = require('yt-search');
 const fs = require('fs');
 const https = require('https');
 const redis = new Redis();
+const downloadFile = require('./services/downloadFile')
 const {
   exec
 } = require("child_process");
@@ -195,19 +196,6 @@ async function getLibrarySize(id) {
   });
 
   return total
-}
-
-async function downloadFile(url, destination) {
-  return new Promise((resolve, reject) => {
-    let file = fs.createWriteStream(destination);
-    const request = https.get(url, function(response) {
-      response.pipe(file);
-      file.on('finish', function() {
-        file.close()
-        resolve()
-      });
-    });
-  })
 }
 
 work()
