@@ -203,7 +203,8 @@ async function downloadFile(url, destination) {
     const request = https.get(url, function(response) {
       response.pipe(file);
       file.on('finish', function() {
-        file.close().then(resolve); // close() is async
+        file.close()
+        resolve()
       });
     });
   })
