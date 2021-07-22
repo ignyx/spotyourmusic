@@ -127,17 +127,7 @@ async function spotifyJob(jobId, trackId, videoId) {
   console.log('Fetching cover image for job ' + jobId)
   // Retrieve cover image
   var coverImage = `${__dirname}/public/tracks/${jobId}`
-  await new Promise((resolve, reject) => {
-    let file = fs.createWriteStream(coverImage);
-    const request = https.get(meta.coverUrl, function(response) {
-      console.log(meta.coverUrl)
-      response.pipe(file);
-      file.on('finish', function() {
-        file.close(); // close() is async
-        resolve()
-      });
-    });
-  })
+  await downloadFile(meta.coverUrl, coverImage)
 
   if (!videoId) {
     console.log('Fetching video ID for job ' + jobId)
@@ -204,6 +194,18 @@ async function getLibrarySize(id) {
   });
 
   return total
+}
+
+async function downloadFile(url, destination) {
+  return new Promise((resolve, reject) => {
+    let file = fs.createWriteStream(destination);
+    const request = https.get(url, function(response) {
+      response.pipe(file);
+      file.on('finish', function() {
+        file.close().then(resolve); // close() is async
+      });
+    });
+  })
 }
 
 work()
