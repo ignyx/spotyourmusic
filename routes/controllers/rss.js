@@ -22,7 +22,7 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
       jobId: jobId
     }).lpush('feed' + feed, jobId).exec()
   console.log(`Downloading episode thumbnail for ${author} : ${title}`)
-  await downloadFile(video.thumbnail, `${__dirname}/public/thumbnails/${jobId}.jpg`)
+  await downloadFile(video.thumbnail, `${__dirname}/../../public/thumbnails/${jobId}.jpg`)
   return jobId
 }
 
