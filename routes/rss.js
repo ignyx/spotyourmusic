@@ -32,6 +32,7 @@ router.all('/:id/*?', (req, res, next) => {
 router.get('/:id/', async (req, res) => {
   try {
     var episodes = await controller.getFeed(req.redis, req.feedId)
+    req.redis.set('latestFeed', req.feedId)
     res.render('feed', {
       id: req.feedId,
       title: 'Feed ' + req.feedId,

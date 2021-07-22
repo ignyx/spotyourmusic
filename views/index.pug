@@ -12,3 +12,12 @@ block content
     label(for='url') Url :
     input(type='text' name='url' placeholder='https://open.spotify.com/...')
     input(type='submit')
+
+  if latestFeed
+    form(action=`/feed/${latestFeed}/`, method='POST')
+      h3 Add episode to feed
+        a(href=`/feed/${latestFeed}/`)
+          i #{latestFeed}
+      label(for='videoId') Youtube Video Id or url :
+      input(type='text' id='videoId' name='videoId')
+      input(type='submit')

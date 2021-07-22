@@ -14,6 +14,7 @@ router.get('/', async function(req, res) {
   res.render('index', {
     title: await redis.get('jobcount'),
     size: await redis.get('sizeMb'),
+    latestFeed: await redis.get('latestFeed'),
     message: 'Hello there!'
   })
 })
