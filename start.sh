@@ -5,6 +5,7 @@ sh stop.sh > /dev/null
 
 mkdir -p data 								 # Creates data folder, if it doesn't exist
 mkdir -p public/tracks
+mkdir -p public/thumbnails
 
 # Starts a tmux session named "spotyourmusic" and detaches
 # Starts Redis instance, worker and webserver

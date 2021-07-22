@@ -2,6 +2,7 @@ const jobs = require('../../services/jobs')
 const remove = require('../../services/remove')
 const yts = require('yt-search')
 const diacritics = require('../../diacritics')
+const downloadFile = require('../../serices/downloadFile')
 
 // Adds rss feed info to redis
 module.exports.addEpisode = async (redis, feed, videoId) => {
@@ -20,6 +21,8 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
       dateAdded: new Date().toString(),
       jobId: jobId
     }).lpush('feed' + feed, jobId).exec()
+  console.log(`Downloading episode thumbnail for ${author} : ${title}`)
+  await downloadFile(video.thumbnail, `${__dirname}/public/thumbnails/${jobId}.jpg`)
   return jobId
 }
 

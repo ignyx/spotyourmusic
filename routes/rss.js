@@ -99,7 +99,8 @@ router.get('/:id/feed.xml', async (req, res) => {
           enclosure: {
             url: `${BASE_URL}/tracks/${episode.jobId}.mp3`
           },
-          date: episode.dateAdded
+          date: episode.dateAdded,
+          itunesImage: `${BASE_URL}/thumbnails/${episode.jobId}.jpg`
         })
     })
 
