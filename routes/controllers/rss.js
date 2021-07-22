@@ -2,7 +2,7 @@ const jobs = require('../../services/jobs')
 const remove = require('../../services/remove')
 const yts = require('yt-search')
 const diacritics = require('../../diacritics')
-const downloadFile = require('../../serices/downloadFile')
+const downloadFile = require('../../services/downloadFile')
 
 // Adds rss feed info to redis
 module.exports.addEpisode = async (redis, feed, videoId) => {
