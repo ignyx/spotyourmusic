@@ -101,7 +101,7 @@ async function youtubeJob(jobId, id, title) {
 function youtubeDownload(jobId, id) {
   return new Promise((resolve, reject) => {
     console.log('-- Attemping youtube-dl for job ' + jobId)
-    exec(`youtube-dl -4 -o './public/tracks/${jobId}.%(ext)s' -x --audio-format mp3 --audio-quality 1 "https://www.youtube.com/watch?v=${id}"`, // -4 force ipv4 to avoid rate limitation issues with ipv6
+    exec(`youtube-dl --embed-thumbnail -4 -o './public/tracks/${jobId}.%(ext)s' -x --audio-format mp3 --audio-quality 1 "https://www.youtube.com/watch?v=${id}"`, // -4 force ipv4 to avoid rate limitation issues with ipv6
       (error, stdout, stderr) => {
       if (error) {
         console.log(`error for job ${jobId}: ${error.message}`);
