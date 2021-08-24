@@ -17,7 +17,7 @@ module.exports.addEpisode = async (redis, feed, videoId) => {
       title: `${author} : ${title}`,
       videoId: videoId,
       author: author,
-      description: diacritics.removeDiacritics(video.description),
+      description: 'https://youtu.be/' + videoId + '\n\n' + diacritics.removeDiacritics(video.description),
       dateAdded: new Date().toString(),
       jobId: jobId
     }).lpush('feed' + feed, jobId).exec()
