@@ -32,7 +32,7 @@ module.exports.search = string => {
       if (err) return reject(err);
       resolve(data);
     })
-  } 
+  }) 
 }
 
 // Stores track metadata in Redis
