@@ -26,13 +26,8 @@ async function fetchTrack(id) {
 }
 
 // Searches for tracks from given string and saves it in redis.
-module.exports.search = string => {
-  return new Promise((resolve, reject) => {
-    Spotify.search({type: 'track', query: string}, (err, data) => {
-      if (err) return reject(err);
-      resolve(data);
-    })
-  }) 
+module.exports.search = async function(string) {
+  return await spotify.search({ type: 'track', query: 'All the Small Things' });
 }
 
 // Stores track metadata in Redis
