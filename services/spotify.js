@@ -25,6 +25,14 @@ async function fetchTrack(id) {
   await cacheTrackMetadata(data)
 }
 
+// Searches for tracks from given string and saves it in redis.
+module.exports.search = string => return new Promise((resolve, reject) => {
+  Spotify.search({type: 'track', query: string}, (err, data) => {
+    if (err) return reject(err);
+    resolve(data);
+  })
+} 
+
 // Stores track metadata in Redis
 async function cacheTrackMetadata(track) {
   if (!track) return
