@@ -39,4 +39,13 @@ router.get('/spotify', (req, res) => {
   else res.status(400).end('Unable to locate type and id')
 })
 
+router.get('/search', async (req, res) => {
+  if (!req.query.q || (req.query.q.toString().length > 32))
+    res.redirect('/');
+  else res.render('search', {
+    title: 'Search ' + req.query.q,
+    tracks: await spotify.findTracks(req.query.q)
+  })
+});
+
 module.exports = router

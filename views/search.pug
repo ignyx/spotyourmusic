@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+
+  form(action='/search' method='get') 
+    h3 Search
+    input(type='text' name='q')
+    input(type='submit')
+
+  h2 Results
+
+  ul
+    each track in tracks
+      li
+        a(href=`/track/${track.id}`)
+          img(src=track.coverUrl, alt='cover')
+          span #{track.artist} - #{track.title}
+

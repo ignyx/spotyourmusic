@@ -7,6 +7,11 @@ block content
     b= title
   p Estimated size : #{size}
 
+  form(action='/search' method='get') 
+    h3 Search
+    input(type='text' name='q')
+    input(type='submit')
+
   form(action='/spotify')
     h3 Spotify lookup
     label(for='url') Url :
