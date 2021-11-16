@@ -10,8 +10,10 @@ block content
 
   h2 Results
 
-  each track in tracks
-    a(href=`/track/${track.id}`)
-      img(src=track.coverUrl, alt='cover')
-      span #{track.artist} - #{track.title}
+  ul
+    each track in tracks
+      li
+        a(href=`/track/${track.id}`)
+          img(src=track.coverUrl, alt='cover')
+          span #{track.artist} - #{track.title}
 
