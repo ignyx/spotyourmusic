@@ -52,7 +52,7 @@ module.exports.findTracks = async (string) => {
 
   tracks = []
   await data.tracks.items.forEach(async (track) => {
-    await cacheTrackMetadata(data)
+    await cacheTrackMetadata(track)
 
     tracks.push({
       id: track.id,
