@@ -1,6 +1,7 @@
 # App specific
 data/*
 public/tracks/*
+package-lock.json
 
 # Logs
 logs
