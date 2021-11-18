@@ -1,7 +1,8 @@
 var express = require('express')
 var router = express.Router()
 const controller = require('./controllers/rss')
-const Podcast = require('podcast')
+const Podcast = require('podcast').Podcast;
+const extractChapters = require('get-youtube-chapters');
 
 const BASE_URL = process.env.SPOTYOURMUSIC_BASE_URL
 
@@ -101,7 +102,14 @@ router.get('/:id/feed.xml', async (req, res) => {
             url: `${BASE_URL}/tracks/${episode.jobId}.mp3`
           },
           date: episode.dateAdded,
-          itunesImage: `${BASE_URL}/thumbnails/${episode.jobId}.jpg`
+          itunesImage: `${BASE_URL}/thumbnails/${episode.jobId}.jpg`,
+          pscChapters: {
+            version: '1.2',
+            chapter: extractChapters(episode.description).map(chapter => {
+              chapter.start = secondsToHms(chapter.start);
+              return chapter;
+            })
+	  }
         })
     })
 
@@ -113,5 +121,16 @@ router.get('/:id/feed.xml', async (req, res) => {
     res.status(500).end('Failed.')
   }
 })
+
+secondsToHms = (d) => {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+    var hDisplay = h < 10 ? "0" + h : h;
+    var mDisplay = m < 10 ? "0" + m : m;
+    var sDisplay = s < 10 ? "0" + s : s;
+    return hDisplay + ":" + mDisplay + ":" + sDisplay;
+}
 
 module.exports = router
