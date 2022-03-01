@@ -2,7 +2,6 @@ const Redis = require("ioredis");
 const ffmetadata = require("ffmetadata");
 const youtube = require('yt-search');
 const fs = require('fs');
-const https = require('https');
 const redis = new Redis();
 const downloadFile = require('./services/downloadFile')
 const {
