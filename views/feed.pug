@@ -15,6 +15,7 @@ block content
     table
       tr
         th Remove
+        th Video Id
         th Author
         th Title
         th Added
@@ -24,6 +25,8 @@ block content
         tr
           td
             a(href=`/feed/${id}/${episode.jobId}/remove`) [x]
+          td
+            a(href=`https://www.youtube.com/watch?v=${episode.videoId}`) #{episode.videoId}
           td #{episode.author}
           td #{episode.title}
           td #{episode.dateAdded}
