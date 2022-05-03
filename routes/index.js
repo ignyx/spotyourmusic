@@ -1,7 +1,8 @@
-var express = require('express')
-var router = express.Router()
+const config = require('../config');
+const express = require('express');
+const router = express.Router();
 const Redis = require("ioredis")
-const redis = new Redis()
+const redis = new Redis(config.redisPort);
 const spotify = require('../services/spotify')
 const jobs = require('../services/jobs')
 const playlistRouter = require('./playlist')
@@ -19,6 +20,7 @@ router.get('/', async function(req, res) {
   })
 })
 
+// Share Redis instance among requests
 router.use((req, res, next) => {
   req.redis = redis
   next()
