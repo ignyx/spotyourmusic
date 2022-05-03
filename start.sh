@@ -16,5 +16,5 @@ tmux \
   new-session -d -s "spotyourmusic" \
   "cd data && redis-server ; read" \; \
   split-window "node worker.js ; read" \; \
-  split-window ". ~/.profile && node index.js ; read" \; \
+  split-window ". ~/.profile && npm run prod ; read" \; \
   #select-layout even-vertical
