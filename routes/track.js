@@ -1,13 +1,13 @@
-var express = require('express')
-var router = express.Router()
-const spotify = require('../services/spotify')
-const jobs = require('../services/jobs')
-const remove = require('../services/remove')
+const express = require('express');
+const router = express.Router();
+const spotify = require('../services/spotify');
+const jobs = require('../services/jobs');
+const remove = require('../services/remove');
 
 // HTML page with track info
 router.get('/:id/', async (req, res) => {
   try {
-    var track = await spotify.getTrack(req.params.id)
+    const track = await spotify.getTrack(req.redis, req.params.id);
     res.render('track', track)
   } catch (err) {
     console.log(err)

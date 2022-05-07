@@ -44,7 +44,7 @@ router.get('/search', async (req, res) => {
     res.redirect('/');
   else res.render('search', {
     title: 'Search ' + req.query.q,
-    tracks: await spotify.findTracks(req.query.q)
+    tracks: await spotify.findTracks(req.redis, req.query.q)
   })
 });
 

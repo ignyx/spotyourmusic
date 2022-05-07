@@ -8,7 +8,7 @@ const controller = require('./controllers/playlist')
 // HTML page with playlist info
 router.get('/:id/', async (req, res) => {
   try {
-    var playlist = await spotify.getPlaylist(req.params.id)
+    const playlist = await spotify.getPlaylist(req.redis, req.params.id);
     res.render('playlist', {
       id: req.params.id,
       name: playlist.name,
@@ -25,7 +25,7 @@ router.get('/:id/', async (req, res) => {
 // JSON with playlist info
 router.get('/:id/json', async (req, res) => {
   try {
-    var playlist = await spotify.getPlaylist(req.params.id)
+    let playlist = await spotify.getPlaylist(req.redis, req.params.id);
     playlist.success = true
     res.json(playlist)
   } catch (err) {
@@ -38,7 +38,7 @@ router.get('/:id/json', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    let playlists = await controller.getAll(req.redis)
+    const playlists = await controller.getAll(req.redis);
     res.render('playlists', {
       title: 'All seen playlists',
       playlists: playlists
@@ -61,7 +61,7 @@ router.get('/:id/queue', async (req, res) => {
 // Provides m3u playlist file
 router.get('/:id/file', async (req, res) => {
   try {
-    var playlist = await spotify.getPlaylist(req.params.id)
+    const playlist = await spotify.getPlaylist(req.redis, req.params.id);
     var result = '#EXTM3U\n'
     result += `#PLAYLIST:${playlist.name}\n`
     playlist.tracks.forEach((track) => {
@@ -81,7 +81,7 @@ router.get('/:id/file', async (req, res) => {
 router.get('/:id/refresh', async (req, res) => {
   if (!req.params.id) return res.end('no id???')
   try {
-    await spotify.forgetPlaylist(req.params.id)
+    await spotify.forgetPlaylist(req.redis, req.params.id)
     res.redirect(`/playlist/${req.params.id}/`)
   } catch (err) {
     console.log(err)
@@ -95,7 +95,7 @@ router.get('/:id/remove', async (req, res) => {
 
   try {
     await remove.playlist(req.redis, req.params.id)
-    await spotify.forgetPlaylist(req.params.id)
+    await spotify.forgetPlaylist(req.redis, req.params.id);
     res.redirect(req.query.redirect ? req.query.redirect : `/track/${req.params.id}/`)
   } catch (err) {
     console.log(err)
