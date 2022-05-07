@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"no test!\"",
+    "test": "NODE_ENV=test mocha --recursive",
     "dev": "NODE_ENV=development node index.js",
     "prod": "NODE_ENV=production node index.js"
   },
@@ -31,6 +31,8 @@
     "yt-search": "2.10.3"
   },
   "devDependencies": {
-    "mocha": "^10.0.0"
+    "mocha": "^10.0.0",
+    "nock": "^13.2.4",
+    "should": "^13.2.3"
   }
 }
