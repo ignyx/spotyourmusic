@@ -62,19 +62,20 @@ router.get('/:id/queue', async (req, res) => {
 router.get('/:id/file', async (req, res) => {
   try {
     const playlist = await spotify.getPlaylist(req.redis, req.params.id);
-    var result = '#EXTM3U\n'
-    result += `#PLAYLIST:${playlist.name}\n`
-    playlist.tracks.forEach((track) => {
-      if (track.job && req.query.byJobNumber)
-        result += `./${track.job}.mp3\n`
-      else result += `${track.artist}-${track.title}.mp3\n`
-    });
+    let result = '#EXTM3U\n';
+    result += `#PLAYLIST:${playlist.name}\n`;
+    playlist.tracks.filter(track => track.available === 'true')
+      .forEach((track) => {
+        if (track.job && req.query.byJobNumber)
+          result += `./${track.job}.mp3\n`;
+        else result += `${track.artist}-${track.title}.mp3\n`;
+      });
     res.setHeader('Content-type', 'audio/x-mpegurl');
-    res.setHeader('Content-Disposition', `attachment; filename="${playlist.name.replace(/\W/g, '')}.m3u"`)
-    res.send(result)
+    res.setHeader('Content-Disposition', `attachment; filename="${playlist.name.replace(/\W/g, '')}.m3u"`);
+    res.send(result);
   } catch (err) {
-    console.log(err)
-    res.status(500).end('Failed. May be an invalid ID')
+    console.log(err);
+    res.status(500).end('Failed. May be an invalid ID');
   }
 })
 
