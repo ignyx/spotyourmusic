@@ -63,8 +63,7 @@ async function cachePlaylist(redis, id) {
   let ids = ''; // For Redis track id list
   for (i = 0; i < data.tracks.items.length; i++) {
     const track = data.tracks.items[i].track;
-    if (track)
-      await cacheTrackMetadata(track);
+    await cacheTrackMetadata(redis, track);
     ids += track.id + ' ';
   }
   await redis.hset('playlist' + id, {
